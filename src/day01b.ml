@@ -25,7 +25,7 @@ let read_lines (filename : string) : string list =
   lines
 
 
-let collect_digits (line: string) : int list =
+let collect_digits (line : string) : int list =
   let find_prefix s = List.find_opt (fun number -> String.starts_with ~prefix:number s) number_strings in
   let is_digit = function '0' .. '9' -> true | _ -> false in
   let length = String.length line in

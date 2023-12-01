@@ -10,7 +10,7 @@ let read_lines (filename : string) : string list =
   lines
 
 
-let collect_digits (s: string) : char list =
+let collect_digits (s : string) : char list =
   let is_digit = function '0' .. '9' -> true | _ -> false in
     List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] s
 
