@@ -1,6 +1,6 @@
 let read_lines (filename : string) : string list =
   let channel = open_in filename in
-  let rec loop (acc : string list) : string list =
+  let rec loop acc =
     try
       let line = input_line channel in
       loop (line :: acc)
@@ -10,13 +10,13 @@ let read_lines (filename : string) : string list =
   lines
 
 
-let collect_digits (s : string) : char list =
+let collect_digits (str : string) : char list =
   let is_digit = function '0' .. '9' -> true | _ -> false in
-    List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] s
+    List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] str
 
 
 let calibration_sum (calibration_strings : string list) : int =
-  let get_calibration_value (s : string) : int =
+  let get_calibration_value s =
     match collect_digits s with
       | [] -> failwith "No digit was found."
       | [d] -> int_of_string (Printf.sprintf "%c%c" d d)

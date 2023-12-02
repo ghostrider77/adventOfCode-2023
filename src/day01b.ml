@@ -15,7 +15,7 @@ let number_strings = List.map (fun (n, _) -> n) number_code
 
 let read_lines (filename : string) : string list =
   let channel = open_in filename in
-  let rec loop (acc : string list) : string list =
+  let rec loop acc =
     try
       let line = input_line channel in
       loop (line :: acc)

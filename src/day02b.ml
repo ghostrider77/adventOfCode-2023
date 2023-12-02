@@ -25,7 +25,7 @@ type game = { id : int; selections : (int BallMap.t) list }
 
 let read_lines (filename : string) : string list =
   let channel = open_in filename in
-  let rec loop (acc : string list) : string list =
+  let rec loop acc =
     try
       let line = input_line channel in
       loop (line :: acc)
@@ -43,7 +43,7 @@ let parse_selection (str : string) : int BallMap.t =
 
 
 let parse_games (lines : string list) : game list =
-  let split_game_info (line : string) : int * string =
+  let split_game_info line =
     match String.split_on_char ':' line with
       | [first; rest] ->
         let id = Scanf.sscanf first "Game %d" (fun id -> id) in
