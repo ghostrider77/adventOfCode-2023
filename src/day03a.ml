@@ -11,7 +11,7 @@ module SymbolSet = Set.Make(
   end
 )
 
-type engine_schema = { height : int; width : int; symbols : SymbolSet.t; numbers : number list }
+type engine_schema = { symbols : SymbolSet.t; numbers : number list }
 
 
 let read_lines (filename : string) : string list =
@@ -44,10 +44,8 @@ let parse_single_line (line : string) (row_index : int) : symbol list * number l
 
 
 let parse_engine_schematic (lines : string list) : engine_schema =
-  let height = List.length lines in
-  let width = String.length @@ List.hd lines in
   let rec loop symbols numbers row_ix = function
-    | [] -> { height; width; symbols; numbers = List.rev numbers }
+    | [] -> { symbols; numbers = List.rev numbers }
     | line :: ls ->
       let syms, ns = parse_single_line line row_ix in
       loop (SymbolSet.union symbols (SymbolSet.of_list syms)) (ns @ numbers) (row_ix + 1) ls in
