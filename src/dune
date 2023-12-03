@@ -1,2 +1,3 @@
 (library
-  (name adventOfCode_2023))
+  (name adventOfCode_2023)
+  (libraries batteries))
