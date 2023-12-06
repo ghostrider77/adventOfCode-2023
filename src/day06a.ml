@@ -26,11 +26,12 @@ let parse_input (lines : string list) : race list =
 
 let calc_record_breaking_product (races : race list) : int =
   let calc_nr_record_breaking {time; record} =
-    let det = sqrt @@ float @@ time * time - 4 * record in
-    if det <= 0.0 then 0
+    let discriminant = float (time * time - 4 * record) in
+    if discriminant <= 0.0 then 0
     else
-      let x1 = (float(time) -. det) /. 2.0 in
-      let x2 = (float(time) +. det) /. 2.0 in
+      let d = sqrt discriminant in
+      let x1 = (float(time) -. d) /. 2.0 in
+      let x2 = (float(time) +. d) /. 2.0 in
       let n1 = int_of_float (if x1 = ceil x1 then x1 +. 1.0 else ceil x1) in
       let n2 = int_of_float (if x2 = floor x2 then x2 -. 1.0 else floor x2) in
       max 0 (n2 - n1 + 1) in
