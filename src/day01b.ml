@@ -14,15 +14,7 @@ let number_strings = List.map (fun (n, _) -> n) number_code
 
 
 let read_lines (filename : string) : string list =
-  let channel = open_in filename in
-  let rec loop acc =
-    try
-      let line = input_line channel in
-      loop (line :: acc)
-    with End_of_file -> List.rev acc in
-  let lines = loop [] in
-  close_in channel;
-  lines
+  In_channel.with_open_text filename (In_channel.input_lines)
 
 
 let collect_digits (line : string) : int list =
