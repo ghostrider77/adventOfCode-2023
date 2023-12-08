@@ -15,7 +15,8 @@ let read_lines (filename : string) : string list =
 
 
 let calc_lcm (n : int) (m : int) =
-  let rec calc_gcd a b = if b = 0 then a else calc_gcd b (a mod b) in
+  let rec calc_gcd a b =
+    if b = 0 then a else calc_gcd b (a mod b) in
   let d = calc_gcd n m in
   (n / d) * m
 
@@ -52,7 +53,6 @@ let traverse_network_simultaneously (network : network) (instructions : instruct
       let nodes = Seq.filter (String.ends_with ~suffix:chr) @@ List.to_seq [parent; left; right] in
       StringSet.add_seq nodes acc in
     StringMap.fold add_valid_nodes network StringSet.empty in
-
   let start_nodes = collect_nodes "A" in
   StringSet.fold (fun node acc -> calc_lcm acc (traverse_network node network instructions)) start_nodes 1
 
