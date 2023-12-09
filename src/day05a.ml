@@ -15,10 +15,6 @@ let category_of_string = function
   | s -> failwith ("Unknown category " ^ s)
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let parse_input (lines : string list) : int list * category_mapping list =
   let open Batteries in
   let extract_seeds line =
@@ -56,7 +52,8 @@ let calc_lowest_location_number (seeds : int list) (category_mappings : category
 
 
 let () =
-  let lines = read_lines "../resources/input_05.txt" in
+  let filename = "../resources/input_05.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let (seeds, category_mappings) = parse_input lines in
   let result = calc_lowest_location_number seeds category_mappings in
   print_int result; print_newline ()

@@ -1,25 +1,12 @@
-let number_code = [
-  ("one", 1);
-  ("two", 2);
-  ("three", 3);
-  ("four", 4);
-  ("five", 5);
-  ("six", 6);
-  ("seven", 7);
-  ("eight", 8);
-  ("nine", 9)
-  ]
-
-let number_strings = List.map (fun (n, _) -> n) number_code
-
-
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
+let number_strings = ["one"; "two"; "three"; "four"; "five"; "six"; "seven"; "eight"; "nine"; "ten"]
+let number_code = List.mapi (fun ix n -> (n, ix + 1)) number_strings
 
 
 let collect_digits (line : string) : int list =
   let find_prefix s = List.find_opt (fun number -> String.starts_with ~prefix:number s) number_strings in
-  let is_digit = function '0' .. '9' -> true | _ -> false in
+  let is_digit = function
+    | '0' .. '9' -> true
+    | _ -> false in
   let length = String.length line in
   let rec loop acc k =
     if k = length then List.rev acc
@@ -42,6 +29,7 @@ let calibration_sum (calibration_strings : string list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_01.txt" in
+  let filename = "../resources/input_01.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let result = calibration_sum lines in
   print_int result; print_newline ()

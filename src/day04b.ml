@@ -5,10 +5,6 @@ let convert_to_intlist (line : string) : int list =
   List.map int_of_string Str.(line |> split (regexp "[ \t]+"))
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let parse_input (lines : string list) : card list =
   let parse line =
     match String.split_on_char ':' line with
@@ -37,7 +33,8 @@ let calc_total_number_of_cards (cards : card list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_04.txt" in
+  let filename = "../resources/input_04.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let cards = parse_input lines in
   let result = calc_total_number_of_cards cards in
   print_int result; print_newline ()

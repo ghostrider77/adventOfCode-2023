@@ -10,10 +10,6 @@ let instruction_of_char = function
   | _ -> failwith "Unknown instruction."
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let calc_lcm (n : int) (m : int) =
   let rec calc_gcd a b =
     if b = 0 then a else calc_gcd b (a mod b) in
@@ -58,7 +54,8 @@ let traverse_network_simultaneously (network : network) (instructions : instruct
 
 
 let () =
-  let lines = read_lines "../resources/input_08.txt" in
+  let filename = "../resources/input_08.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let (instructions, network) = parse_input lines in
   let result = traverse_network_simultaneously network instructions in
   print_int result; print_newline ()

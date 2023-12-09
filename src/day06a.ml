@@ -1,10 +1,6 @@
 type race = { time : int; record : int }
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let parse_input (lines : string list) : race list =
   let convert_tail_to_intlist line =
     line |> Str.split (Str.regexp "[ \t]+") |> List.tl |> List.map int_of_string in
@@ -32,7 +28,8 @@ let calc_record_breaking_product (races : race list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_06.txt" in
+  let filename = "../resources/input_06.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let races = parse_input lines in
   let result = calc_record_breaking_product races in
   print_int result; print_newline ()

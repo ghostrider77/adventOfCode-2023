@@ -14,10 +14,6 @@ module SymbolSet = Set.Make(
 type engine_schema = { symbols : SymbolSet.t; numbers : number list }
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let parse_single_line (line : string) (row_index : int) : symbol list * number list =
   let rec loop symbols numbers column_ix = function
     | [] -> (symbols, numbers)
@@ -55,7 +51,8 @@ let sum_of_part_numbers (schema : engine_schema) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_03.txt" in
+  let filename = "../resources/input_03.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let engine_schema = parse_engine_schematic lines in
   let result = sum_of_part_numbers engine_schema in
   print_int result; print_newline ()

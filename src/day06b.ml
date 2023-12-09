@@ -1,8 +1,5 @@
 type race = { time : int; record : int }
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
 
 let parse_input (lines : string list) : race =
   let read_tail_as_number line =
@@ -25,7 +22,8 @@ let calc_record_breaking_product ({time; record} : race) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_06.txt" in
+  let filename = "../resources/input_06.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let race = parse_input lines in
   let result = calc_record_breaking_product race in
   print_int result; print_newline ()

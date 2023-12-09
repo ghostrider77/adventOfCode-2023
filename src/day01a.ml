@@ -1,10 +1,8 @@
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let collect_digits (str : string) : char list =
-  let is_digit = function '0' .. '9' -> true | _ -> false in
-    List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] str
+  let is_digit = function
+    | '0' .. '9' -> true
+    | _ -> false in
+  List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] str
 
 
 let calibration_sum (calibration_strings : string list) : int =
@@ -17,6 +15,7 @@ let calibration_sum (calibration_strings : string list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_01.txt" in
+  let filename = "../resources/input_01.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let result = calibration_sum lines in
   print_int result; print_newline ()

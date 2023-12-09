@@ -24,10 +24,6 @@ let compare_hands ({cards = cards1; type_ = t1} : hand) ({cards = cards2; type_ 
   compare (t1, cards1) (t2, cards2)
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let add_joker = function
     | FourOfAKind -> FiveOfAKind
     | ThreeOfAKind -> FourOfAKind
@@ -70,7 +66,8 @@ let calc_total_winnings (bids : bid list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_07.txt" in
+  let filename = "../resources/input_07.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let bids = parse_hands lines in
   let result = calc_total_winnings bids in
   print_int result; print_newline ()

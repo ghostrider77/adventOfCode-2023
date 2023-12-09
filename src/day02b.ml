@@ -23,10 +23,6 @@ module BallMap = Map.Make(
 type game = { id : int; selections : (int BallMap.t) list }
 
 
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let parse_selection (str : string) : int BallMap.t =
   let read_ball s = Scanf.sscanf s "%d %s" (fun n c -> (color_of_string c, n)) in
   str |> String.split_on_char ','
@@ -61,7 +57,8 @@ let calc_sum_of_powers (games : game list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_02.txt" in
+  let filename = "../resources/input_02.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let games = parse_games lines in
   let result = calc_sum_of_powers games in
   print_int result; print_newline ()

@@ -1,7 +1,3 @@
-let read_lines (filename : string) : string list =
-  In_channel.with_open_text filename (In_channel.input_lines)
-
-
 let convert_to_intlist (line : string) : int list =
   List.map int_of_string Str.(line |> split (regexp "[ \t]+"))
 
@@ -32,7 +28,8 @@ let sum_of_left_extrapolated_values (histories : int list list) : int =
 
 
 let () =
-  let lines = read_lines "../resources/input_09.txt" in
+  let filename = "../resources/input_09.txt" in
+  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let histories = List.map convert_to_intlist lines in
   let result_a = sum_of_right_extrapolated_values histories in
   let result_b = sum_of_left_extrapolated_values histories in
