@@ -13,17 +13,13 @@ let neville_interpolation (ys : int array) (x : int) =
   for j = 2 to n do
     for i = 0 to n - j do
       let d = table.(i).(j-1) * table.(i+j-1).(0) - table.(i+1).(j-1) * table.(i).(0) in
-      table.(i).(j) <- d / (table.(i+j-1).(0) - table.(i).(0))
+      table.(i).(j) <- d / (table.(i+j-1).(0) - table.(i).(0));
     done;
   done;
   table.(0).(n)
 
 
-let sum_of_right_extrapolated_values (histories : int list list) : int =
-  List.fold_left (fun acc h -> acc + neville_interpolation (Array.of_list h) (List.length h)) 0 histories
-
-
-let sum_of_left_extrapolated_values (histories : int list list) : int =
+let sum_of_extrapolated_values (histories : int list list) : int =
   List.fold_left (fun acc h -> acc + neville_interpolation (Array.of_list h) (-1)) 0 histories
 
 
@@ -31,7 +27,5 @@ let () =
   let filename = "../resources/input_09.txt" in
   let lines = In_channel.with_open_text filename (In_channel.input_lines) in
   let histories = List.map convert_to_intlist lines in
-  let result_a = sum_of_right_extrapolated_values histories in
-  let result_b = sum_of_left_extrapolated_values histories in
-  print_int result_a; print_newline ();
-  print_int result_b; print_newline ()
+  let result = sum_of_extrapolated_values histories in
+  print_int result; print_newline ();
