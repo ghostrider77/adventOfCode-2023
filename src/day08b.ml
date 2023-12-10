@@ -55,7 +55,7 @@ let traverse_network_simultaneously (network : network) (instructions : instruct
 
 let () =
   let filename = "../resources/input_08.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let (instructions, network) = parse_input lines in
   let result = traverse_network_simultaneously network instructions in
   print_int result; print_newline ()

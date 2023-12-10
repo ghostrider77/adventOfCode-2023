@@ -99,7 +99,7 @@ let count_enclosed_cells (grid : grid) : int =
 
 let () =
   let filename = "../resources/input_10.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let grid = parse_input lines in
   let result = count_enclosed_cells grid in
   print_int result; print_newline ()

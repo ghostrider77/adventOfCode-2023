@@ -58,7 +58,7 @@ let calc_sum_of_powers (games : game list) : int =
 
 let () =
   let filename = "../resources/input_02.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let games = parse_games lines in
   let result = calc_sum_of_powers games in
   print_int result; print_newline ()

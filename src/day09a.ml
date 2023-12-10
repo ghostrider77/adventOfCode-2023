@@ -25,7 +25,7 @@ let sum_of_extrapolated_values (histories : int list list) : int =
 
 let () =
   let filename = "../resources/input_09.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let histories = List.map convert_to_intlist lines in
   let result = sum_of_extrapolated_values histories in
   print_int result; print_newline ();

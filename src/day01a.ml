@@ -16,6 +16,6 @@ let calibration_sum (calibration_strings : string list) : int =
 
 let () =
   let filename = "../resources/input_01.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let result = calibration_sum lines in
   print_int result; print_newline ()

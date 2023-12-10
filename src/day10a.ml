@@ -89,7 +89,7 @@ let traverse_loop ({tiles; _} as grid : grid) : int =
 
 let () =
   let filename = "../resources/input_10.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let grid = parse_input lines in
   let result = traverse_loop grid in
   print_int result; print_newline ()

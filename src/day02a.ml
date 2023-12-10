@@ -62,7 +62,7 @@ let get_valid_game_id_sum (games : game list) : int =
 
 let () =
   let filename = "../resources/input_02.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let games = parse_games lines in
   let result = get_valid_game_id_sum games in
   print_int result; print_newline ()

@@ -54,7 +54,7 @@ let calc_total_winnings (bids : bid list) : int =
 
 let () =
   let filename = "../resources/input_07.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let bids = parse_hands lines in
   let result = calc_total_winnings bids in
   print_int result; print_newline ()

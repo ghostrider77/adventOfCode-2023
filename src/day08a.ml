@@ -38,7 +38,7 @@ let traverse_network (network : network) (instructions : instruction Seq.t) : in
 
 let () =
   let filename = "../resources/input_08.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let (instructions, network) = parse_input lines in
   let result = traverse_network network instructions in
   print_int result; print_newline ()

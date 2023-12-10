@@ -53,7 +53,7 @@ let calc_lowest_location_number (seeds : int list) (category_mappings : category
 
 let () =
   let filename = "../resources/input_05.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let (seeds, category_mappings) = parse_input lines in
   let result = calc_lowest_location_number seeds category_mappings in
   print_int result; print_newline ()

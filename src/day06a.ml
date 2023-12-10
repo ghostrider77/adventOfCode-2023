@@ -29,7 +29,7 @@ let calc_record_breaking_product (races : race list) : int =
 
 let () =
   let filename = "../resources/input_06.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let races = parse_input lines in
   let result = calc_record_breaking_product races in
   print_int result; print_newline ()

@@ -34,7 +34,7 @@ let calc_total_number_of_cards (cards : card list) : int =
 
 let () =
   let filename = "../resources/input_04.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let cards = parse_input lines in
   let result = calc_total_number_of_cards cards in
   print_int result; print_newline ()

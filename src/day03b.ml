@@ -60,7 +60,7 @@ let sum_of_gear_ratios ({symbols; numbers; _} : engine_schema) : int =
 
 let () =
   let filename = "../resources/input_03.txt" in
-  let lines = In_channel.with_open_text filename (In_channel.input_lines) in
+  let lines = In_channel.with_open_text filename In_channel.input_lines in
   let engine_schema = parse_engine_schematic lines in
   let result = sum_of_gear_ratios engine_schema in
   print_int result; print_newline ()
