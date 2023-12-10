@@ -34,20 +34,20 @@ let find_next_tile ({tiles; _} : grid) ({coord = {x; y}; heading} : position) : 
       | West -> {x = x; y = y - 1} in
   let heading' =
     match (tiles.(x').(y'), heading) with
-    | ('|',  South) -> South
-    | ('|',  North) -> North
-    | ('-',  East) -> East
-    | ('-',  West) -> West
-    | ('L',  South) -> East
-    | ('L',  West) -> North
-    | ('J',  South) -> West
-    | ('J',  East) -> North
-    | ('7',  North) -> West
-    | ('7',  East) -> South
-    | ('F', North) -> East
-    | ('F', West) -> South
-    | ('S', _) -> North
-    | _ -> failwith "The loop ended unexpectedly."
+      | ('|',  South) -> South
+      | ('|',  North) -> North
+      | ('-',  East) -> East
+      | ('-',  West) -> West
+      | ('L',  South) -> East
+      | ('L',  West) -> North
+      | ('J',  South) -> West
+      | ('J',  East) -> North
+      | ('7',  North) -> West
+      | ('7',  East) -> South
+      | ('F', North) -> East
+      | ('F', West) -> South
+      | ('S', _) -> North
+      | _ -> failwith "The loop ended unexpectedly."
   in {coord = coord'; heading = heading'}
 
 
