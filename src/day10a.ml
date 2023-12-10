@@ -69,8 +69,9 @@ let determine_start_heading ({tiles; nr_rows; nr_columns} : grid) ({x; y} : coor
         symbol = '-' || symbol = 'L' || symbol = 'F'
     | _ -> false in
 
-  let heading = List.find is_valid_heading [North; East; South; West] in
-  {coord = {x; y}; heading}
+  match List.find_opt is_valid_heading [North; East; South; West] with
+    | Some heading -> {coord = {x; y}; heading}
+    | None -> failwith "Nowhere to go."
 
 
 let traverse_loop ({tiles; _} as grid : grid) : int =
