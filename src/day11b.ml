@@ -21,7 +21,9 @@ let get_empty_space (lines : string list) : expansion =
   let transpose rows =
     let rec loop acc xs =
       if List.for_all (fun x -> x = []) xs then List.rev acc
-      else let column = List.map List.hd xs in loop (column :: acc) (List.map List.tl xs) in
+      else
+        let column = List.(map hd xs) in
+        loop (column :: acc) List.(map tl xs) in
     loop [] rows in
 
   let ls = List.map (fun line -> List.of_seq (String.to_seq line)) lines in
@@ -36,7 +38,7 @@ let distance ({x = x1; y = y1} : coord) ({x = x2; y = y2} : coord) ({rows; colum
   let left = min y1 y2 in
   let right = max y1 y2 in
   let row_correction =
-    List.fold_left (fun acc ix -> if down < ix && ix < up then acc + expansion_size -1 else acc) 0 rows in
+    List.fold_left (fun acc ix -> if down < ix && ix < up then acc + expansion_size - 1 else acc) 0 rows in
   let column_correction =
     List.fold_left (fun acc jy -> if left < jy && jy < right then acc + expansion_size - 1 else acc) 0 columns in
   (up - down) + (right - left) + row_correction + column_correction
