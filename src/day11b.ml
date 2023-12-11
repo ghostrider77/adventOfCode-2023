@@ -20,7 +20,7 @@ let get_empty_space (lines : string list) : expansion =
 
   let transpose rows =
     let rec loop acc xs =
-      if List.for_all (fun x -> x = []) xs then List.rev acc
+      if List.(for_all is_empty xs) then List.rev acc
       else
         let column = List.(map hd xs) in
         loop (column :: acc) List.(map tl xs) in
