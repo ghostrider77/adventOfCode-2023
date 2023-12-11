@@ -41,7 +41,9 @@ let distance ({x = x1; y = y1} : coord) ({x = x2; y = y2} : coord) ({rows; colum
 let calc_sum_of_shortest_paths (universes : coord list) (expansion : expansion) : int =
   let rec loop acc = function
     | [] -> acc
-    | u1 :: rest -> loop (acc + List.fold_left (fun s u2 -> s + distance u1 u2 expansion) 0 rest) rest in
+    | u1 :: rest ->
+        let acc' = List.fold_left (fun s u2 -> s + distance u1 u2 expansion) acc rest in
+        loop acc' rest in
   loop 0 universes
 
 
