@@ -1,14 +1,6 @@
 type spring = Operational | Damaged | Unknown
 type record = { arrangement : spring list; group_sizes : int list }
 
-module RecordTbl = Hashtbl.Make(
-  struct
-    type t = record
-    let equal r1 r2 = r1.arrangement = r2.arrangement && r1.group_sizes = r2.group_sizes
-    let hash {arrangement; group_sizes} = Hashtbl.hash (arrangement, group_sizes)
-  end)
-
-
 let spring_of_char = function
   | '.' -> Operational
   | '#' -> Damaged
@@ -34,12 +26,13 @@ let parse_input_records (lines : string list) : record list =
 let different_arrangements (record : record) : int =
   let change_first_occurrence xs s =
     let rec loop acc = function
-        | [] -> List.rev acc
-        | Unknown :: rest -> (List.rev (s :: acc)) @ rest
-        | x :: xss -> loop (x :: acc) xss in
+      | x :: xss ->
+          if x = Unknown then (List.rev (s :: acc)) @ xss
+          else loop (x :: acc) xss
+      | [] -> List.rev acc in
     loop [] xs in
 
-  let cache = RecordTbl.create 10000 in
+  let cache = Hashtbl.create 1000 in
   let open Batteries in
   let rec calc_arrangements {arrangement; group_sizes} =
     let arrangement' = List.drop_while (fun s -> s = Operational) arrangement in
@@ -49,7 +42,7 @@ let different_arrangements (record : record) : int =
       | (_ , []) -> if List.for_all (fun s -> s <> Damaged) arrangement' then 1 else 0
       | (_, size :: sizes) ->
           let current_record = {arrangement = arrangement'; group_sizes} in
-          match RecordTbl.find_opt cache current_record with
+          match Hashtbl.find_option cache current_record with
             | Some n -> n
             | None ->
                 let block, rest = List.span (fun s -> s <> Operational) arrangement' in
@@ -62,7 +55,7 @@ let different_arrangements (record : record) : int =
                     let a2 = change_first_occurrence arrangement' Damaged in
                     (calc_arrangements {arrangement = a1; group_sizes} +
                       calc_arrangements {arrangement = a2; group_sizes}) in
-                RecordTbl.add cache current_record result;
+                Hashtbl.add cache current_record result;
                 result in
 
   calc_arrangements record
