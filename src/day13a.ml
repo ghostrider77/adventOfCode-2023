@@ -60,10 +60,11 @@ let vertically_mirrored ({grid; ncols; _} : pattern) : int option =
 
 
 let summarize_pattern_nodes (patterns : pattern list) : int =
-  let sum_valid_indices ns = List.(ns
-    |> map (fun n -> Option.to_list (Option.map (fun o -> o + 1) n))
-    |> flatten
-    |> fold_left (+) 0) in
+  let sum_valid_indices ns =
+    ns
+      |> List.map (fun n -> Option.to_list (Option.map (fun o -> o + 1) n))
+      |> List.flatten
+      |> List.fold_left (+) 0 in
 
   let ixs = List.map horizontally_mirrored patterns in
   let jys = List.map vertically_mirrored patterns in

@@ -76,7 +76,7 @@ let find_modified_reflection ({grid; nrows; ncols} as pattern : pattern) : refle
     if ix = nrows then failwith "No smudge was found"
     else if jy = ncols then loop (ix + 1) 0
     else
-      let grid' = Array.map Array.copy grid in
+      let grid' = Array.(map copy grid) in
       let x = grid'.(ix).(jy) in
       grid'.(ix).(jy) <- if x = Ash then Rock else Ash;
       let rs = get_reflections { grid = grid'; nrows; ncols } in
