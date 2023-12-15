@@ -31,7 +31,6 @@ module HashMap : sig
   val fold_lefti : ('acc -> int -> lens list -> 'acc) -> 'acc -> t -> 'acc
   val remove : string -> t -> unit
   val replace : lens -> t -> unit
-
 end = struct
   type t = lens list array
 
