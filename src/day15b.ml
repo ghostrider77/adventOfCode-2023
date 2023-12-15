@@ -84,10 +84,10 @@ let calc_sum_of_focusing_powers (steps : operation list) : int =
     let n = List.length lenses in
     Seq.fold_lefti (fun s slot {focal_length; _} -> s + (ix + 1)*(n - slot)*focal_length) acc (List.to_seq lenses) in
   let hmap = HashMap.empty in
-  let process hmap = function
+  let process = function
     | Remove {label} -> HashMap.remove label hmap
     | Replace lens -> HashMap.replace lens hmap in
-  List.iter (fun step -> process hmap step) steps;
+  List.iter process steps;
   HashMap.fold_lefti calc_focusing_powers 0 hmap
 
 
