@@ -34,26 +34,29 @@ let get_neighbors ({nrows; ncols; _} : city) ({coord = {x; y}; heading; straight
   let is_valid_position {coord = {x; y}; straight; _} =
     0 <= x && x < nrows && 0 <= y && y < ncols && straight <= 10 in
 
-  let potential_neighbors =
-    match heading with
-      | Up ->
-          [{coord = {x = x - 1; y}; heading = Up; straight = straight + 1};
-           {coord = {x; y = y - 1}; heading = Left; straight = 1};
-           {coord = {x; y = y + 1}; heading = Right; straight = 1}]
-      | Right ->
-          [{coord = {x; y = y + 1}; heading = Right; straight = straight + 1};
-           {coord = {x = x - 1; y}; heading = Up; straight = 1};
-           {coord = {x = x + 1; y}; heading = Down; straight = 1}]
-      | Down ->
-          [{coord = {x = x + 1; y}; heading = Down; straight = straight + 1};
-           {coord = {x; y = y - 1}; heading = Left; straight = 1};
-           {coord = {x; y = y + 1}; heading = Right; straight = 1}]
-      | Left ->
-          [{coord = {x; y = y - 1}; heading = Left; straight = straight + 1};
-           {coord = {x = x - 1; y}; heading = Up; straight = 1};
-           {coord = {x = x + 1; y}; heading = Down; straight = 1}] in
-  let potential_neighbors' = if straight < 4 then [List.hd potential_neighbors] else potential_neighbors in
-  List.filter is_valid_position potential_neighbors'
+  if x = -1 && y = -1 then
+    [{coord = {x = 0; y = 0}; heading = Down; straight = 1}; {coord = {x = 0; y = 0}; heading = Right; straight = 1}]
+  else
+    let potential_neighbors =
+      match heading with
+        | Up ->
+            [{coord = {x = x - 1; y}; heading = Up; straight = straight + 1};
+            {coord = {x; y = y - 1}; heading = Left; straight = 1};
+            {coord = {x; y = y + 1}; heading = Right; straight = 1}]
+        | Right ->
+            [{coord = {x; y = y + 1}; heading = Right; straight = straight + 1};
+            {coord = {x = x - 1; y}; heading = Up; straight = 1};
+            {coord = {x = x + 1; y}; heading = Down; straight = 1}]
+        | Down ->
+            [{coord = {x = x + 1; y}; heading = Down; straight = straight + 1};
+            {coord = {x; y = y - 1}; heading = Left; straight = 1};
+            {coord = {x; y = y + 1}; heading = Right; straight = 1}]
+        | Left ->
+            [{coord = {x; y = y - 1}; heading = Left; straight = straight + 1};
+            {coord = {x = x - 1; y}; heading = Up; straight = 1};
+            {coord = {x = x + 1; y}; heading = Down; straight = 1}] in
+    let potential_neighbors' = if straight < 4 then [List.hd potential_neighbors] else potential_neighbors in
+    List.filter is_valid_position potential_neighbors'
 
 
 let calc_minimal_heat_loss ({grid; nrows; ncols} as city : city) : int =
@@ -70,9 +73,8 @@ let calc_minimal_heat_loss ({grid; nrows; ncols} as city : city) : int =
         List.map (fun ({coord = {x; y}; _} as n) -> {position = n; heat_loss = heat_loss + grid.(x).(y)}) neighbors in
     loop (PositionSet.add position finalized) (List.fold_left H.insert heap' states) in
 
-  let initial_state1 = {position = {coord = {x = 0; y = 0}; heading = Right; straight = 1}; heat_loss = 0} in
-  let initial_state2 = {position = {coord = {x = 0; y = 0}; heading = Down; straight = 1}; heat_loss = 0} in
-  min (loop PositionSet.empty H.(empty |> add initial_state1)) (loop PositionSet.empty H.(empty |> add initial_state2))
+  let initial_state = {position = {coord = {x = -1; y = -1}; heading = Up; straight = 0}; heat_loss = -grid.(0).(0)} in
+  loop PositionSet.empty H.(empty |> add initial_state)
 
 
 let () =
