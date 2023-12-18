@@ -10,7 +10,7 @@ module PositionSet = Set.Make(
     let compare = Stdlib.compare
   end)
 
-module Heap = Set.Make(
+module TreeSet = Set.Make(
   struct
     type t = state
     let compare {position = p1; heat_loss = h1} {position = p2; heat_loss = h2} = compare (h1, p1) (h2, p2)
@@ -56,19 +56,19 @@ let get_neighbors ({nrows; ncols; _} : city) ({coord = {x; y}; heading; straight
 let calc_minimal_heat_loss ({grid; nrows; ncols} as city : city) : int =
   let is_target {coord = {x; y}; _} =
     x = nrows - 1 && y = ncols - 1 in
-  let rec loop finalized heap =
-    let {heat_loss; position} as state = Heap.min_elt heap in
-    let heap' = Heap.remove state heap in
+  let rec loop finalized set =
+    let {heat_loss; position} as state = TreeSet.min_elt set in
+    let set' = TreeSet.remove state set in
     if is_target position then heat_loss
-    else if PositionSet.mem position finalized then loop finalized heap'
+    else if PositionSet.mem position finalized then loop finalized set'
     else
       let neighbors = get_neighbors city position in
       let states =
         List.map (fun ({coord = {x; y}; _} as n) -> {position = n; heat_loss = heat_loss + grid.(x).(y)}) neighbors in
-    loop (PositionSet.add position finalized) (List.fold_right Heap.add states heap') in
+    loop (PositionSet.add position finalized) (List.fold_right TreeSet.add states set') in
 
   let initial_state = {position = {coord = {x = 0; y = 0}; heading = Down; straight = 1}; heat_loss = 0} in
-  loop PositionSet.empty Heap.(empty |> add initial_state)
+  loop PositionSet.empty TreeSet.(empty |> add initial_state)
 
 
 let () =
