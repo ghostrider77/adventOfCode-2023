@@ -1,5 +1,3 @@
-open Batteries
-
 type coord = { x : int; y : int }
 type direction = Up | Right | Down | Left
 type position = { coord : coord; heading : direction; straight : int }
@@ -12,7 +10,7 @@ module PositionSet = Set.Make(
     let compare = Stdlib.compare
   end)
 
-module H = Heap.Make(
+module Heap = Set.Make(
   struct
     type t = state
     let compare {position = p1; heat_loss = h1} {position = p2; heat_loss = h2} = compare (h1, p1) (h2, p2)
@@ -63,18 +61,18 @@ let calc_minimal_heat_loss ({grid; nrows; ncols} as city : city) : int =
   let is_target {coord = {x; y}; straight; _} =
     x = nrows - 1 && y = ncols - 1 && straight >= 4 in
   let rec loop finalized heap =
-    let {heat_loss; position} = H.find_min heap in
-    let heap' = H.del_min heap in
+    let {heat_loss; position} as state = Heap.min_elt heap in
+    let heap' = Heap.remove state heap in
     if is_target position then heat_loss
     else if PositionSet.mem position finalized then loop finalized heap'
     else
       let neighbors = get_neighbors city position in
       let states =
         List.map (fun ({coord = {x; y}; _} as n) -> {position = n; heat_loss = heat_loss + grid.(x).(y)}) neighbors in
-    loop (PositionSet.add position finalized) (List.fold_left H.insert heap' states) in
+    loop (PositionSet.add position finalized) (List.fold_right Heap.add states heap') in
 
   let initial_state = {position = {coord = {x = -1; y = -1}; heading = Up; straight = 0}; heat_loss = -grid.(0).(0)} in
-  loop PositionSet.empty H.(empty |> add initial_state)
+  loop PositionSet.empty Heap.(empty |> add initial_state)
 
 
 let () =
