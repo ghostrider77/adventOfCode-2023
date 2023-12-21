@@ -1,5 +1,4 @@
 type coord = { x : int; y : int }
-type tile = Rock | GardenPlot
 
 module CoordSet = Set.Make(
   struct
