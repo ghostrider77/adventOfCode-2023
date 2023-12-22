@@ -69,11 +69,11 @@ let collect_supports (bricks : BrickSet.t) : (BrickSet.t SupportMap.t * BrickSet
 
 
 let falling_bricks (brick : brick) (supports : BrickSet.t SupportMap.t) (supported_by : BrickSet.t SupportMap.t) : int =
-  let queue = Queue.create () in
   let immediate_supports = SupportMap.find brick supports in
-  let next_to_fall =
+  let next_bricks_to_fall =
     BrickSet.filter (fun s -> BrickSet.cardinal (SupportMap.find s supported_by) = 1) immediate_supports in
-  Queue.add_seq queue (BrickSet.to_seq next_to_fall);
+  let queue = Queue.create () in
+  Queue.add_seq queue (BrickSet.to_seq next_bricks_to_fall);
   let rec loop count visited =
     match Queue.take_opt queue with
       | None -> count
@@ -82,10 +82,10 @@ let falling_bricks (brick : brick) (supports : BrickSet.t SupportMap.t) (support
           let bricks = BrickSet.filter (fun s -> BrickSet.subset (SupportMap.find s supported_by) visited) supps in
           Queue.add_seq queue (BrickSet.to_seq bricks);
           loop (count + 1) (BrickSet.union visited bricks) in
-  loop 0 next_to_fall
+  loop 0 next_bricks_to_fall
 
 
-let count_bricks_that_can_be_disintegrated (bricks : brick list) : int =
+let calc_total_number_of_falling_bricks (bricks : brick list) : int =
   let settled = fall_bricks bricks in
   let supports, supported_by = collect_supports settled in
   BrickSet.fold (fun brick acc -> acc + falling_bricks brick supports supported_by) settled 0
@@ -95,5 +95,5 @@ let () =
   let filename = "../resources/input_22.txt" in
   let lines = In_channel.with_open_text filename In_channel.input_lines in
   let bricks = parse_input lines in
-  let result = count_bricks_that_can_be_disintegrated bricks in
+  let result = calc_total_number_of_falling_bricks bricks in
   print_int result; print_newline ()
