@@ -14,13 +14,6 @@ module CoordSet = Set.Make(
 
 type path = { head : coord; visited : CoordSet.t }
 
-module PathSet = Set.Make(
-  struct
-    type t = coord list
-    let compare = Stdlib.compare
-end)
-
-
 let tile_of_char = function
   | '.' -> Trail
   | '#' -> Forest
