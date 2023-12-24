@@ -11,7 +11,7 @@ let parse_input (lines : string list) : hail list =
   List.map parse lines
 
 
-let calc_position ({position = {x; y}; speed = {v_x; v_y}} : hail) (t : float) =
+let calc_position ({position = {x; y}; speed = {v_x; v_y}} : hail) (t : float) : position =
   let x' = x +. t *. v_x in
   let y' = y +. t *. v_y in
   {x = x'; y = y'}
