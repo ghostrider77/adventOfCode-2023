@@ -37,7 +37,7 @@ let calc_determinant (matrix: num array array) : num =
           else
             let submatrix = List.map (fun row -> List.filteri (fun i _ -> i <> jy) row) rest in
             let sign = if jy mod 2 = 0 then 1 else -1 in
-            det +/ (num_of_int sign) */ a */ loop submatrix in
+            det +/ (Int sign) */ a */ loop submatrix in
         List.fold_left process (Int 0) (List.mapi (fun jy a -> (a, jy)) first_row)
   in loop Array.(matrix |> map to_list |> to_list)
 
