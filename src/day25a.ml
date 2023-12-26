@@ -4,7 +4,6 @@ type node = { name : string; original : edge }
 module StringMap = Map.Make(String)
 module StringSet = Set.Make(String)
 
-
 module Graph : sig
   type t
   val create : edge list -> t
@@ -15,8 +14,8 @@ end = struct
 
   let get_neighbors adjacency_list str =
     match StringMap.find_opt str adjacency_list with
-        | None -> []
-        | Some neighbors -> List.map (fun {name; _} -> name) neighbors
+      | None -> []
+      | Some neighbors -> List.map (fun {name; _} -> name) neighbors
 
   let create edges =
     let add_neighbor adjacency_list {src; dest} =
@@ -83,32 +82,32 @@ end = struct
     let postvisit_id = ref 1 in
     let is_node_visited node = Hashtbl.mem visit_started node in
     let find_unvisited_neighbor node =
-        node |> get_neighbors adjacency_list |> List.find_opt (fun item -> not (is_node_visited item)) in
+      node |> get_neighbors adjacency_list |> List.find_opt (fun item -> not (is_node_visited item)) in
 
     let explore start_node =
-        let rec traverse_component component = function
-            | [] -> component
-            | (node :: rest) as previsit_stack ->
-                match find_unvisited_neighbor node with
-                    | Some neighbor ->
-                        Hashtbl.add visit_started neighbor !previsit_id;
-                        previsit_id := !previsit_id + 1;
-                        traverse_component (neighbor :: component) (neighbor :: previsit_stack)
-                    | None ->
-                        Hashtbl.add visit_ended node !postvisit_id;
-                        postvisit_id := !postvisit_id + 1;
-                        traverse_component component rest in
+      let rec traverse_component component = function
+        | [] -> component
+        | (node :: rest) as previsit_stack ->
+          match find_unvisited_neighbor node with
+            | Some neighbor ->
+                Hashtbl.add visit_started neighbor !previsit_id;
+                previsit_id := !previsit_id + 1;
+                traverse_component (neighbor :: component) (neighbor :: previsit_stack)
+            | None ->
+              Hashtbl.add visit_ended node !postvisit_id;
+              postvisit_id := !postvisit_id + 1;
+              traverse_component component rest in
         Hashtbl.add visit_started start_node !previsit_id;
         previsit_id := !previsit_id + 1;
         traverse_component [start_node] [start_node] in
 
     let rec find_components components = function
-        | [] -> components
-        | node :: remaining_nodes ->
-            if is_node_visited node then find_components components remaining_nodes
-            else
-                let current_component = explore node in
-                find_components (current_component :: components) remaining_nodes in
+      | [] -> components
+      | node :: remaining_nodes ->
+        if is_node_visited node then find_components components remaining_nodes
+        else
+          let current_component = explore node in
+          find_components (current_component :: components) remaining_nodes in
 
     find_components [] (get_nodes graph)
 end
