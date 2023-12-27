@@ -41,7 +41,7 @@ let parse_hands (lines : string list) : bid list =
   let parse_hand line =
     let cards, amount =
       Scanf.sscanf line "%c%c%c%c%c %d" (fun c1 c2 c3 c4 c5 d -> List.map int_of_card [c1; c2; c3; c4; c5], d) in
-    { hand = { cards; type_ = determine_type cards }; amount } in
+    {hand = {cards; type_ = determine_type cards }; amount} in
 
   List.map parse_hand lines
 
