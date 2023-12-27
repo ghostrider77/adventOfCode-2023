@@ -9,10 +9,10 @@ let parse_input (lines : string list) : card list =
   let parse line =
     match String.split_on_char ':' line with
       | [c; rest] ->
-        let id = Scanf.sscanf c "Card %d" (fun d -> d) in
-        (match String.split_on_char '|' rest with
-          | [win; own] -> { id; winning_numbers = convert_to_intlist win; own_numbers = convert_to_intlist own }
-          | _ -> failwith "Malformed input.")
+          let id = Scanf.sscanf c "Card %d" (fun d -> d) in
+          (match String.split_on_char '|' rest with
+            | [win; own] -> {id; winning_numbers = convert_to_intlist win; own_numbers = convert_to_intlist own}
+            | _ -> failwith "Malformed input.")
       | _ -> failwith "Malformed input." in
 
   List.map parse lines
