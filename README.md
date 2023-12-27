@@ -6,6 +6,14 @@
 * *Num* - used once, it was useful for solving a system of linear equations using arbitrarily large integers
 * *Str* - used occasionally for input parsing
 
+**Environment**
+
+```bash
+opam switch create aoc2023 ocaml-base-compiler.5.1.0
+eval $(opam env --switch=aoc2023)
+opam install -y utop merlin ocaml-lsp-server
+```
+
 **Run** (in REPL):
 ```bash
 ocaml day01a.ml
