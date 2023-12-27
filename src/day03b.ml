@@ -1,4 +1,12 @@
-open Batteries
+module List = struct
+  include List
+
+  let span p xs =
+    let rec loop acc = function
+      | h :: tl when p h -> loop (h :: acc) tl
+      | ls -> List.rev acc, ls in
+    loop [] xs
+end
 
 type cell = { x : int; y : int }
 type symbol = { position : cell; value : char }
@@ -15,28 +23,31 @@ type engine_schema = { symbols : SymbolSet.t; numbers : number list }
 
 
 let parse_single_line (line : string) (row_index : int) : symbol list * number list =
+  let is_digit = function
+    | '0' .. '9' -> true
+    | _ -> false in
   let rec loop symbols numbers column_ix = function
     | [] -> (symbols, numbers)
     | (c :: css) as cs ->
       if c = '.' then loop symbols numbers (column_ix + 1) css
-      else if Char.is_digit c then
-        let (digits, rest) = List.span Char.is_digit cs in
+      else if is_digit c then
+        let (digits, rest) = List.span is_digit cs in
         let length = List.length digits in
-        let start = { x = row_index; y = column_ix } in
-        let n = { start; length; value = int_of_string @@ String.concat "" (List.map (String.make 1) digits) } in
+        let start = {x = row_index; y = column_ix} in
+        let n = {start; length; value = int_of_string @@ String.concat "" (List.map (String.make 1) digits)} in
         loop symbols (n :: numbers) (column_ix + length) rest
       else
-        let position = { x = row_index; y = column_ix } in
-        loop ({ position; value = c } :: symbols) numbers (column_ix + 1) css in
-  loop [] [] 0 (String.to_list line)
+        let position = {x = row_index; y = column_ix} in
+        loop ({position; value = c} :: symbols) numbers (column_ix + 1) css in
+  loop [] [] 0 (List.of_seq @@ String.to_seq line)
 
 
 let parse_engine_schematic (lines : string list) : engine_schema =
   let rec loop symbols numbers row_ix = function
     | [] -> { symbols; numbers = List.rev numbers }
     | line :: ls ->
-      let syms, ns = parse_single_line line row_ix in
-      loop (SymbolSet.union symbols (SymbolSet.of_list syms)) (ns @ numbers) (row_ix + 1) ls in
+        let syms, ns = parse_single_line line row_ix in
+        loop (SymbolSet.union symbols (SymbolSet.of_list syms)) (ns @ numbers) (row_ix + 1) ls in
   loop SymbolSet.empty [] 0 lines
 
 
