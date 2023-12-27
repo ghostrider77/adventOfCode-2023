@@ -17,12 +17,12 @@ let parse_input_records (lines : string list) : record list =
   let parse line =
     let arrangement, groups = Scanf.sscanf line "%s %s" (fun a g -> a, g) in
     let group_sizes = groups |> String.split_on_char ',' |> List.map int_of_string in
-    { arrangement; group_sizes } in
+    {arrangement; group_sizes} in
 
   let unfold_record { arrangement; group_sizes } =
     let unfolded_sizes = List.flatten @@ List.init 5 (fun _ -> group_sizes) in
     let unfolded_arrangement = String.concat "?" @@ List.init 5 (fun _ -> arrangement) in
-    { arrangement = unfolded_arrangement; group_sizes = unfolded_sizes } in
+    {arrangement = unfolded_arrangement; group_sizes = unfolded_sizes} in
 
   List.map (fun line -> unfold_record (parse line)) lines
 

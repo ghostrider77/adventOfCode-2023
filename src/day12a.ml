@@ -1,3 +1,20 @@
+module List = struct
+  include List
+
+  let drop_while p xs =
+    let rec loop = function
+      | h :: tl when p h -> loop tl
+      | ls -> ls in
+    loop xs
+
+  let span p xs =
+    let rec loop acc = function
+      | h :: tl when p h -> loop (h :: acc) tl
+      | ls -> List.rev acc, ls in
+    loop [] xs
+end
+
+
 type spring = Operational | Damaged | Unknown
 type record = { arrangement : spring list; group_sizes : int list }
 
@@ -13,7 +30,7 @@ let parse_input_records (lines : string list) : record list =
     let spring_conditions, groups = Scanf.sscanf line "%s %s" (fun a g -> a, g) in
     let arrangement = spring_conditions |> String.to_seq |> Seq.map spring_of_char |> List.of_seq in
     let group_sizes = groups |> String.split_on_char ',' |> List.map int_of_string in
-    { arrangement; group_sizes } in
+    {arrangement; group_sizes} in
 
   List.map parse lines
 
@@ -26,7 +43,6 @@ let rec different_arrangements ({arrangement; group_sizes} : record) : int =
         | x :: xss -> loop (x :: acc) xss in
     loop [] xs in
 
-  let open Batteries in
   let arrangement' = List.drop_while (fun s -> s = Operational) arrangement in
   match (arrangement', group_sizes) with
     | ([], []) -> 1
