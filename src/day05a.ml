@@ -1,3 +1,13 @@
+module List = struct
+  include List
+
+  let span p xs =
+    let rec loop acc = function
+      | h :: tl when p h -> loop (h :: acc) tl
+      | ls -> List.rev acc, ls in
+    loop [] xs
+end
+
 type category = Seed | Soil | Fertilizer | Water | Light | Temperature | Humidity | Location
 type conversion_map = { destination_start : int; source_start : int; range_length : int }
 type category_mapping = { category_from : category; category_to : category; mappings : conversion_map list }
@@ -16,7 +26,6 @@ let category_of_string = function
 
 
 let parse_input (lines : string list) : int list * category_mapping list =
-  let open Batteries in
   let extract_seeds line =
     line |> Str.split (Str.regexp "[ \t]+") |> List.tl |> List.map int_of_string in
   let read_conversion_map line =
@@ -24,12 +33,12 @@ let parse_input (lines : string list) : int list * category_mapping list =
   let rec loop acc = function
     | [] -> List.rev acc
     | _ :: ls ->
-      let (block, rest) = List.span (fun l -> not (String.is_empty l)) ls in
-      let (category1, category2) =
-        Scanf.sscanf (List.hd block) "%s@-to-%s map" (fun c1 c2 -> category_of_string c1, category_of_string c2) in
-      let mappings = block |> List.tl |> List.map read_conversion_map in
-      let category_mapping = {category_from = category1; category_to = category2; mappings} in
-      loop (category_mapping :: acc) rest in
+        let (block, rest) = List.span (fun l -> l <> "") ls in
+        let (category1, category2) =
+          Scanf.sscanf (List.hd block) "%s@-to-%s map" (fun c1 c2 -> category_of_string c1, category_of_string c2) in
+        let mappings = block |> List.tl |> List.map read_conversion_map in
+        let category_mapping = {category_from = category1; category_to = category2; mappings} in
+        loop (category_mapping :: acc) rest in
   let seeds = extract_seeds (List.hd lines) in
   let category_mappings = loop [] (List.tl lines) in
   (seeds, category_mappings)
