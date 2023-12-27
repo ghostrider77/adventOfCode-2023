@@ -20,7 +20,7 @@ let find_start_node ({tiles; _} : grid) : coord =
     | row :: rest ->
         match Array.find_mapi (fun j c -> if c = 'S' then Some j else None) row with
           | None -> loop (ix + 1) rest
-          | Some jy -> { x = ix; y = jy } in
+          | Some jy -> {x = ix; y = jy} in
   let coord = loop 0 (Array.to_list tiles) in
   coord
 
