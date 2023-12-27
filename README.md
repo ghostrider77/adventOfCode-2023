@@ -8,11 +8,12 @@
 
 **Run** (in REPL):
 ```bash
-ocaml day04a.ml
+ocaml day01a.ml
 ```
 
 **Compile and Run**:
 ```bash
+# day04a.ml depends on Str
 ocamlfind ocamlopt -o prog -package str -linkpkg day04a.ml
 
 ./prog
