@@ -2,7 +2,7 @@ let collect_digits (str : string) : char list =
   let is_digit = function
     | '0' .. '9' -> true
     | _ -> false in
-  List.rev @@ String.fold_left (fun acc char -> if is_digit char then char :: acc else acc) [] str
+  List.rev @@ String.fold_left (fun acc chr -> if is_digit chr then chr :: acc else acc) [] str
 
 
 let calibration_sum (calibration_strings : string list) : int =
