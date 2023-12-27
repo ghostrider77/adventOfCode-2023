@@ -15,7 +15,7 @@ let parse_patterns (lines : string list) : pattern list =
     | (h :: _) as ps ->
         let nrows = List.length ps in
         let ncols = List.length h in
-        { grid = Array.of_list (List.map Array.of_list ps); nrows; ncols } in
+        {grid = Array.of_list (List.map Array.of_list ps); nrows; ncols} in
 
   let rec loop acc current_pattern = function
     | [] ->
@@ -62,8 +62,8 @@ let vertically_mirrored ({grid; ncols; _} : pattern) : int list =
 
 
 let get_reflections (pattern : pattern) : reflection list =
-  let ixs = List.map (fun ix -> { reflection_type = Horizontal; ix }) @@ horizontally_mirrored pattern in
-  let jys = List.map (fun ix -> { reflection_type = Vertical; ix }) @@ vertically_mirrored pattern in
+  let ixs = List.map (fun ix -> {reflection_type = Horizontal; ix}) @@ horizontally_mirrored pattern in
+  let jys = List.map (fun ix -> {reflection_type = Vertical; ix}) @@ vertically_mirrored pattern in
   ixs @ jys
 
 
@@ -79,7 +79,7 @@ let find_modified_reflection ({grid; nrows; ncols} as pattern : pattern) : refle
       let grid' = Array.(map copy grid) in
       let x = grid'.(ix).(jy) in
       grid'.(ix).(jy) <- if x = Ash then Rock else Ash;
-      let rs = get_reflections { grid = grid'; nrows; ncols } in
+      let rs = get_reflections {grid = grid'; nrows; ncols} in
       match List.find_opt (fun r -> r <> initial_reflection) rs with
         | Some r -> r
         | _ -> loop ix (jy + 1) in

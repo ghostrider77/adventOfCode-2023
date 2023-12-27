@@ -13,7 +13,7 @@ let parse_patterns (lines : string list) : pattern list =
     | (h :: _) as ps ->
         let nrows = List.length ps in
         let ncols = List.length h in
-        { grid = Array.of_list (List.map Array.of_list ps); nrows; ncols } in
+        {grid = Array.of_list (List.map Array.of_list ps); nrows; ncols} in
 
   let rec loop acc current_pattern = function
     | [] ->
