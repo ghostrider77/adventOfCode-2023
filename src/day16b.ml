@@ -8,13 +8,13 @@ type beam = { position : tile; heading : direction }
 module TileSet = Set.Make(
   struct
     type t = tile
-    let compare {x = x1; y = y1} {x = x2; y = y2} = compare (x1, y1) (x2, y2)
+    let compare = Stdlib.compare
   end)
 
 module BeamSet = Set.Make(
   struct
     type t = beam
-    let compare {position = p1; heading = h1} {position = p2; heading = h2} = compare (p1.x, p1.y, h1) (p2.x, p2.y, h2)
+    let compare = Stdlib.compare
   end)
 
 
