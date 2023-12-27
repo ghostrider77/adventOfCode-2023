@@ -17,7 +17,7 @@ let color_of_string = function
 module BallMap = Map.Make(
   struct
     type t = color
-    let compare c1 c2 = compare (string_of_color c1) (string_of_color c2)
+    let compare = Stdlib.compare
   end)
 
 type game = { id : int; selections : (int BallMap.t) list }
@@ -34,14 +34,14 @@ let parse_games (lines : string list) : game list =
   let split_game_info line =
     match String.split_on_char ':' line with
       | [first; rest] ->
-        let id = Scanf.sscanf first "Game %d" (fun id -> id) in
-        (id, String.trim rest)
+          let id = Scanf.sscanf first "Game %d" (fun id -> id) in
+          (id, String.trim rest)
       | _ -> failwith "Malformed input" in
 
   let parse_one_game line =
     let id, content = split_game_info line in
     let rec loop acc = function
-      | [] -> { id = id; selections = List.rev acc }
+      | [] -> {id = id; selections = List.rev acc}
       | selection :: rest -> loop ((parse_selection selection) :: acc) rest in
     loop [] (content |> String.split_on_char ';' |> List.map String.trim) in
 
@@ -55,9 +55,9 @@ let get_valid_game_id_sum (games : game list) : int =
       | Some n -> n in
   let is_valid_selection balls =
     get_or_else balls Red <= 12 && get_or_else balls Green <= 13 && get_or_else balls Blue <= 14 in
-  let is_valid_game { selections; _ } =
+  let is_valid_game {selections; _} =
     List.for_all is_valid_selection selections in
-  List.fold_left (fun acc ({ id; _ } as game) -> if is_valid_game game then acc + id else acc) 0 games
+  List.fold_left (fun acc ({id; _} as game) -> if is_valid_game game then acc + id else acc) 0 games
 
 
 let () =
