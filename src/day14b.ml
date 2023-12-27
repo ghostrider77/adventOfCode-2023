@@ -30,7 +30,7 @@ let parse_platform = function
       let coordinates = List.(concat @@ mapi parse_row lines) in
       let cubeRocks = select_coords_by_type coordinates CubeRock in
       let roundedRocks = select_coords_by_type coordinates RoundedRock in
-      { cubeRocks = CoordSet.of_list cubeRocks; roundedRocks = CoordSet.of_list roundedRocks; nrows; ncols }
+      {cubeRocks = CoordSet.of_list cubeRocks; roundedRocks = CoordSet.of_list roundedRocks; nrows; ncols}
 
 
 let tilt_column (cubeRocks : coord list) (roundedRocks : coord list) : coord list =
@@ -71,7 +71,7 @@ let tilt ({cubeRocks; roundedRocks; ncols; nrows} as plt : platform) (direction 
       | West | East -> nrows in
   let roundedRocks' =
     Seq.fold_left (fun acc k -> CoordSet.union acc (tilt_column k)) CoordSet.empty (Seq.init k Fun.id) in
-  { plt with roundedRocks = roundedRocks' }
+  {plt with roundedRocks = roundedRocks'}
 
 
 let calc_north_tilting_score ({roundedRocks; nrows; _} : platform) : int =
