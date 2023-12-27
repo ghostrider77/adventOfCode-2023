@@ -18,9 +18,9 @@ let parse_input (lines : string list) : instruction Seq.t * network =
     StringMap.add parent children network in
   match lines with
     | xs :: _ :: nodes ->
-      let instructions = xs |> String.to_seq |> Seq.map instruction_of_char in
-      let network = List.fold_left update StringMap.empty nodes in
-      (instructions, network)
+        let instructions = xs |> String.to_seq |> Seq.map instruction_of_char in
+        let network = List.fold_left update StringMap.empty nodes in
+        (instructions, network)
     | _ -> failwith "Malformed input."
 
 
