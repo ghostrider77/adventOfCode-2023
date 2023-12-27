@@ -6,9 +6,9 @@ let parse_input (lines : string list) : race list =
     line |> Str.split (Str.regexp "[ \t]+") |> List.tl |> List.map int_of_string in
   match lines with
     | [a; b] ->
-      let ts = convert_tail_to_intlist a in
-      let rs = convert_tail_to_intlist b in
-      List.rev @@ List.fold_left2 (fun acc t r -> {time = t; record = r} :: acc) [] ts rs
+        let ts = convert_tail_to_intlist a in
+        let rs = convert_tail_to_intlist b in
+        List.rev @@ List.fold_left2 (fun acc t r -> {time = t; record = r} :: acc) [] ts rs
     | _ -> failwith "Malformed input."
 
 

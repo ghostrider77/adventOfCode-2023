@@ -5,7 +5,7 @@ let parse_input (lines : string list) : race =
   let read_tail_as_number line =
     line |> Str.split (Str.regexp "[ \t]+") |> List.tl |> String.concat "" |> int_of_string in
   match lines with
-    | [a; b] -> { time = read_tail_as_number a; record = read_tail_as_number b }
+    | [a; b] -> {time = read_tail_as_number a; record = read_tail_as_number b}
     | _ -> failwith "Malformed input."
 
 
