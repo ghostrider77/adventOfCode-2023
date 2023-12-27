@@ -20,8 +20,7 @@ let parse_patterns (lines : string list) : pattern list =
         let ps = List.rev current_pattern in
         List.rev (ps :: acc)
     | l :: ls ->
-        if l = "" then
-          loop ((List.rev current_pattern) :: acc) [] ls
+        if l = "" then loop ((List.rev current_pattern) :: acc) [] ls
         else
           let row = l |> String.to_seq |> Seq.map terrain_of_char |> List.of_seq in
           loop acc (row :: current_pattern) ls in
